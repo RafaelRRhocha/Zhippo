@@ -37,7 +37,6 @@ export default [
     },
     rules: {
       ...mantine.rules,
-      // ...next.rules, // Comentado para teste
       ...prettier.rules,
 
       'prettier/prettier': 'error',
@@ -48,6 +47,8 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
       'react-refresh/only-export-components': 'off',
+      'no-console': 'off',
+      'no-undef': 'off',
     },
     settings: {
       react: {

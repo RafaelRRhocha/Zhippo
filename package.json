@@ -1,6 +1,6 @@
 {
   "name": "zhippo",
-  "version": "0.1.0",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -16,6 +16,7 @@
     "@mantine/modals": "^8.0.1",
     "@mantine/notifications": "^8.0.1",
     "@mantine/nprogress": "^8.0.1",
+    "@tabler/icons-react": "^3.31.0",
     "dayjs": "^1.11.13",
     "next": "15.3.2",
     "react": "^19.0.0",

@@ -3,11 +3,15 @@ import '../styles/globals.css';
 
 import {
   ColorSchemeScript,
+  createTheme,
   mantineHtmlProps,
   MantineProvider,
 } from '@mantine/core';
 import { Sora } from 'next/font/google';
 import React from 'react';
+
+import Header from '@/components/Header';
+import { mantineTheme } from '@/helpers/theme';
 
 // setup font
 const sora = Sora({
@@ -21,6 +25,8 @@ export const metadata = {
   description:
     'Zhippo é uma calculadora de frete rápida e simples para vendedores independentes. Compare prazos e valores de envio em segundos, e compartilhe com seus clientes direto pelo WhatsApp.',
 };
+
+const theme = createTheme(mantineTheme);
 
 export default function RootLayout({
   children,
@@ -48,14 +54,18 @@ export default function RootLayout({
           content="Zhippo é uma calculadora de frete rápida e simples para vendedores independentes. Compare prazos e valores de envio em segundos, e compartilhe com seus clientes direto pelo WhatsApp."
         />
 
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="light" />
       </head>
 
       <body
         suppressHydrationWarning
         className={`overflow-x-hidden overflow-y-scroll md:overflow-hidden ${sora.variable} font-sora`}
       >
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider theme={theme} defaultColorScheme="light">
+          <Header />
+
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
