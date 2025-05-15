@@ -21,7 +21,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex w-full items-center justify-between px-4">
+    <header className="flex w-full items-center justify-between px-4 shadow-sm">
       <div className="flex items-center gap-x-2 py-2">
         <Image src="/logo.png" alt="Zhippo" width={70} height={70} />
         <h1 className="text-xl font-bold">Zhippo</h1>
