@@ -1,7 +1,16 @@
 'use client';
 
-import { Badge, Box, Card, Flex, Group, Table, Text } from '@mantine/core';
-import { IconClock, IconCoins } from '@tabler/icons-react';
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Group,
+  Table,
+  Text,
+} from '@mantine/core';
+import { IconBrandWhatsapp, IconClock, IconCoins } from '@tabler/icons-react';
 
 import { ShippingResultType } from './ShippingCalculator';
 
@@ -15,8 +24,43 @@ export default function ShippingResults({ results }: ShippingResultsProps) {
     ...results.map((r) => parseInt(r.deliveryTime.split(' ')[0])),
   );
 
+  const formatWhatsAppMessage = () => {
+    const message = `Valor do frete:\n${results
+      .map(
+        (result) =>
+          `- ${result.name}: R$ ${result.price
+            .toFixed(2)
+            .replace('.', ',')} – ${result.deliveryTime}`,
+      )
+      .join('\n')}`;
+
+    return encodeURIComponent(message);
+  };
+
+  const handleShareWhatsApp = () => {
+    const message = formatWhatsAppMessage();
+    window.open(`https://wa.me/?text=${message}`, '_blank');
+  };
+
   return (
     <Box>
+      <Group justify="space-between" mb="lg" align="center" display="flex">
+        <Text fw={600} size="lg" mb="md">
+          Resultados
+        </Text>
+
+        <Box mt="md">
+          <Button
+            onClick={handleShareWhatsApp}
+            leftSection={<IconBrandWhatsapp size={20} />}
+            variant="filled"
+            color="green"
+            fullWidth
+          >
+            Compartilhar no WhatsApp
+          </Button>
+        </Box>
+      </Group>
       <Table striped highlightOnHover withTableBorder withColumnBorders>
         <Table.Thead>
           <Table.Tr>

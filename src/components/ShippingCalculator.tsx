@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Card, Divider, Text } from '@mantine/core';
+import { Box, Card, Text } from '@mantine/core';
 import { useState } from 'react';
 
 import ShippingForm from './ShippingForm';
@@ -78,10 +78,6 @@ export default function ShippingCalculator() {
 
       {results && (
         <Card withBorder shadow="sm" p="md" radius="md">
-          <Text fw={600} size="lg" mb="md">
-            Resultados
-          </Text>
-          <Divider mb="md" />
           <ShippingResults results={results} />
         </Card>
       )}
