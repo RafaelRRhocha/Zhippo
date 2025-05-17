@@ -49,6 +49,7 @@ export default [
       'react-refresh/only-export-components': 'off',
       'no-console': 'off',
       'no-undef': 'off',
+      'no-unused-vars': 'off',
     },
     settings: {
       react: {

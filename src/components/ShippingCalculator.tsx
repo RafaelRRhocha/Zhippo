@@ -3,68 +3,24 @@
 import { Box, Card, Text } from '@mantine/core';
 import { useState } from 'react';
 
+import { CreateShippingData, Shipping } from '@/interfaces/shipping';
+import { shippingService } from '@/services/shipping/api';
+
 import ShippingForm from './ShippingForm';
 import ShippingResults from './ShippingResults';
 
-// Type for shipping calculation results
-export interface ShippingResultType {
-  name: string;
-  price: number;
-  deliveryTime: string;
-  type: string;
-}
-
 export default function ShippingCalculator() {
-  const [results, setResults] = useState<ShippingResultType[] | null>(null);
+  const [results, setResults] = useState<Shipping[] | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Function to calculate shipping (mock data initially)
-  const calculateShipping = async (data: {
-    origin: string;
-    destination: string;
-    weight: number;
-    height?: number;
-    width?: number;
-    length?: number;
-  }) => {
-    setLoading(true);
-
-    // In a real implementation, we would use form data to calculate
-    console.log('Calculating shipping with data:', data);
-
-    // Simulating API call with setTimeout
-    setTimeout(() => {
-      // Mock data as requested
-      const mockResults: ShippingResultType[] = [
-        {
-          name: 'Correios - PAC',
-          price: 21.5,
-          deliveryTime: '5 dias úteis',
-          type: 'Econômico',
-        },
-        {
-          name: 'Jadlog',
-          price: 28.9,
-          deliveryTime: '3 dias úteis',
-          type: 'Expresso',
-        },
-        {
-          name: 'Correios - SEDEX',
-          price: 35.9,
-          deliveryTime: '1 dia útil',
-          type: 'Expresso',
-        },
-        {
-          name: 'Loggi',
-          price: 25.9,
-          deliveryTime: '2 dias úteis',
-          type: 'Normal',
-        },
-      ];
-
-      setResults(mockResults);
+  const calculateShipping = async (data: CreateShippingData) => {
+    try {
+      setLoading(true);
+      const response = await shippingService.calculate(data, 'mock');
+      setResults(response);
+    } finally {
       setLoading(false);
-    }, 1500); // Simulating a 1.5 second delay
+    }
   };
 
   return (

@@ -45,7 +45,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`overflow-x-hidden overflow-y-scroll md:overflow-hidden ${sora.variable} font-sora`}
+        className={`overflow-x-hidden overflow-y-scroll ${sora.variable} font-sora`}
       >
         <ThemeProvider>
           <Header />

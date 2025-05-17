@@ -12,7 +12,6 @@ export interface LocalStorageColorSchemeManagerOptions {
 export function localStorageColorSchemeManager({
   key = 'mantine-color-scheme',
 }: LocalStorageColorSchemeManagerOptions = {}): MantineColorSchemeManager {
-  // eslint-disable-next-line no-unused-vars
   let handleStorageEvent: (event: StorageEvent) => void;
 
   return {

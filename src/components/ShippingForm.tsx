@@ -12,53 +12,61 @@ import { useForm } from '@mantine/form';
 import { IconCalculator } from '@tabler/icons-react';
 import { useState } from 'react';
 
-interface IValues {
-  origin: string;
-  destination: string;
-  weight: number;
-  height?: number;
-  width?: number;
-  length?: number;
-}
+import { CreateShippingData } from '@/interfaces/shipping';
 
 interface ShippingFormProps {
-  // eslint-disable-next-line no-unused-vars
-  onSubmit: (values: IValues) => void;
+  onSubmit: (values: CreateShippingData) => void;
   loading: boolean;
 }
 
 export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
   const [showDimensions, setShowDimensions] = useState(false);
 
-  const form = useForm({
+  const form = useForm<CreateShippingData>({
     initialValues: {
-      origin: '',
-      destination: '',
-      weight: 0.5,
-      height: 0,
-      width: 0,
-      length: 0,
+      from: {
+        postal_code: '',
+      },
+      to: {
+        postal_code: '',
+      },
+      package: {
+        weight: 1,
+        height: undefined,
+        width: undefined,
+        length: undefined,
+      },
     },
     validate: {
-      origin: (value) =>
-        value.length === 8 || value.length === 9
-          ? null
-          : 'CEP de origem inválido',
-      destination: (value) =>
-        value.length === 8 || value.length === 9
-          ? null
-          : 'CEP de destino inválido',
-      weight: (value) => (value > 0 ? null : 'Peso deve ser maior que 0'),
+      from: {
+        postal_code: (value) =>
+          value.length === 8 || value.length === 9
+            ? null
+            : 'CEP de origem inválido',
+      },
+      to: {
+        postal_code: (value) =>
+          value.length === 8 || value.length === 9
+            ? null
+            : 'CEP de destino inválido',
+      },
+      package: {
+        weight: (value) => (value > 0 ? null : 'Peso deve ser maior que 0'),
+      },
     },
   });
 
-  const handleSubmit = form.onSubmit((formValues) => {
+  const handleSubmit = form.onSubmit((values) => {
     if (!showDimensions) {
-      // eslint-disable-next-line no-unused-vars
-      const { height, width, length, ...basicData } = formValues;
-      onSubmit(basicData);
+      const formattedValues = {
+        ...values,
+        package: {
+          weight: values.package.weight,
+        },
+      };
+      onSubmit(formattedValues);
     } else {
-      onSubmit(formValues);
+      onSubmit(values);
     }
   });
 
@@ -70,7 +78,7 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
             label="CEP de Origem"
             placeholder="00000-000"
             required
-            {...form.getInputProps('origin')}
+            {...form.getInputProps('from.postal_code')}
             classNames={{
               input: 'placeholder:text-gray-400',
             }}
@@ -81,7 +89,7 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
             label="CEP de Destino"
             placeholder="00000-000"
             required
-            {...form.getInputProps('destination')}
+            {...form.getInputProps('to.postal_code')}
             classNames={{
               input: 'placeholder:text-gray-400',
             }}
@@ -89,13 +97,12 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6 }}>
           <NumberInput
-            label="Peso"
-            description="em kg"
-            placeholder="0.5"
+            label="Peso (kg)"
+            placeholder="0"
             min={0.01}
             step={0.1}
             required
-            {...form.getInputProps('weight')}
+            {...form.getInputProps('package.weight')}
             classNames={{
               input: 'placeholder:text-gray-400',
             }}
@@ -121,11 +128,10 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
           <>
             <Grid.Col span={{ base: 12, md: 4 }}>
               <NumberInput
-                label="Altura"
-                description="em cm"
+                label="Altura (cm)"
                 placeholder="0"
                 min={0}
-                {...form.getInputProps('height')}
+                {...form.getInputProps('package.height')}
                 classNames={{
                   input: 'placeholder:text-gray-400',
                 }}
@@ -133,11 +139,10 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4 }}>
               <NumberInput
-                label="Largura"
-                description="em cm"
+                label="Largura (cm)"
                 placeholder="0"
                 min={0}
-                {...form.getInputProps('width')}
+                {...form.getInputProps('package.width')}
                 classNames={{
                   input: 'placeholder:text-gray-400',
                 }}
@@ -145,11 +150,10 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4 }}>
               <NumberInput
-                label="Comprimento"
-                description="em cm"
+                label="Comprimento (cm)"
                 placeholder="0"
                 min={0}
-                {...form.getInputProps('length')}
+                {...form.getInputProps('package.length')}
                 classNames={{
                   input: 'placeholder:text-gray-400',
                 }}
