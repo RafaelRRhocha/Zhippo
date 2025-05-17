@@ -39,19 +39,70 @@ export default function ShippingForm({ onSubmit, loading }: ShippingFormProps) {
     },
     validate: {
       from: {
-        postal_code: (value) =>
-          value.length === 8 || value.length === 9
-            ? null
-            : 'CEP de origem inválido',
+        postal_code: (value) => {
+          if (value.length !== 8 && value.length !== 9) {
+            return 'CEP de origem inválido';
+          }
+          if (value === form.values.to.postal_code) {
+            return 'CEP de origem não pode ser igual ao de destino';
+          }
+          return null;
+        },
       },
       to: {
-        postal_code: (value) =>
-          value.length === 8 || value.length === 9
-            ? null
-            : 'CEP de destino inválido',
+        postal_code: (value) => {
+          if (value.length !== 8 && value.length !== 9) {
+            return 'CEP de destino inválido';
+          }
+          if (value === form.values.from.postal_code) {
+            return 'CEP de destino não pode ser igual ao de origem';
+          }
+          return null;
+        },
       },
       package: {
-        weight: (value) => (value > 0 ? null : 'Peso deve ser maior que 0'),
+        weight: (value) => {
+          if (!value || value <= 0) {
+            return 'Peso deve ser maior que 0';
+          }
+          if (value > 100) {
+            return 'Peso não pode ser maior que 100kg';
+          }
+          return null;
+        },
+        height: (value) => {
+          if (showDimensions) {
+            if (!value || value <= 0) {
+              return 'Altura deve ser maior que 0';
+            }
+            if (value > 100) {
+              return 'Altura não pode ser maior que 100cm';
+            }
+          }
+          return null;
+        },
+        width: (value) => {
+          if (showDimensions) {
+            if (!value || value <= 0) {
+              return 'Largura deve ser maior que 0';
+            }
+            if (value > 100) {
+              return 'Largura não pode ser maior que 100cm';
+            }
+          }
+          return null;
+        },
+        length: (value) => {
+          if (showDimensions) {
+            if (!value || value <= 0) {
+              return 'Comprimento deve ser maior que 0';
+            }
+            if (value > 100) {
+              return 'Comprimento não pode ser maior que 100cm';
+            }
+          }
+          return null;
+        },
       },
     },
   });
