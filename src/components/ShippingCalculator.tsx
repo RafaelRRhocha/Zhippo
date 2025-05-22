@@ -16,7 +16,7 @@ export default function ShippingCalculator() {
   const calculateShipping = async (data: CreateShippingData) => {
     try {
       setLoading(true);
-      const response = await shippingService.calculate(data, 'mock');
+      const response = await shippingService.calculate(data);
       setResults(response);
     } finally {
       setLoading(false);
